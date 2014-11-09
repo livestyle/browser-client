@@ -1,0 +1,28 @@
+{
+  "name": "browser-client",
+  "version": "1.0.0",
+  "description": "A generic browser LiveStyle client",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "livestyle",
+    "css",
+    "live"
+  ],
+  "author": "Sergey Chikuyonok <serge.che@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "livestyle-cssom-patcher": "livestyle/cssom-patcher",
+    "livestyle-client": "livestyle/client"
+  },
+  "devDependencies": {
+    "gulp": "^3.8.10",
+    "vinyl-source-stream": "^1.0.0",
+    "through2": "^0.6.3",
+    "gulp-streamify": "0.0.5",
+    "gulp-uglify": "^1.0.1",
+    "browserify": "^6.2.0"
+  }
+}
