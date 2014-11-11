@@ -8,7 +8,8 @@ var source = require('vinyl-source-stream');
 gulp.task('build', function() {
 	return browserify({
 		entries: './index.js',
-		detectGlobals: false
+		detectGlobals: false,
+		standalone: 'livestyleClient'
 	})
 	.bundle()
 	.pipe(source('livestyle-client.js'))

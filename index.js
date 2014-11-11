@@ -1,34 +1,35 @@
 var client = require('livestyle-client');
 var patcher = require('livestyle-cssom-patcher');
 
+function extractHost(url) {
+	if (url) {
+		var m = url.match(/^(\w+)(:\/\/.+?)(\/|$)/);
+		return m && (/^wss?$/.test(m[1]) ? m[1] : 'ws') + m[2];
+	}
+}
+
 function initFromScript(script) {
-	var host = script.getAttribute('data-livestyle-host');
-	var rewriteHost = (script.getAttribute('data-livestyle-rewrite') || '').trim().toLowerCase();
-	var config = {
+	var hosts = [
+		client.config().host,
+		extractHost(script.src),
+		extractHost(script.getAttribute('data-livestyle-host'))
+	];
+	init({
 		rewriteHost: true
-	};
-
-	if (rewriteHost && rewriteHost !== 'true' && rewriteHost !== 'yes') {
-		config.rewriteHost = false;
-	}
-
-	if (host) {
-		var port = null;
-		host = host.replace(/:(\w+)(\/.*)?$/, function(str, p) {
-			port = +p;
-		});
-
-		config.host = host;
-		if (port) {
-			config.port = port;
-		}
-	}
-
-	init(config);
+		host: hosts.filter(function(host) {
+			return !!host;
+		})
+	});
 }
 
 function init(config) {
 	client
+	.on('open', function() {
+		console.log('LiveStyle: connected to server');
+	})
+	.on('close', function() {
+		console.log('LiveStyle: closed connection to server');
+	})
 	.on('incoming-updates', function(data) {
 		console.log('incoming patch', data.uri, data.patches);
 		var result = patcher.patch(data.uri, data.patches);
