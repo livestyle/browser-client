@@ -15,7 +15,7 @@ function initFromScript(script) {
 		extractHost(script.getAttribute('data-livestyle-host'))
 	];
 	init({
-		rewriteHost: true
+		rewriteHost: true,
 		host: hosts.filter(function(host) {
 			return !!host;
 		})
