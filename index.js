@@ -1,6 +1,11 @@
 var client = require('livestyle-client');
 var patcher = require('livestyle-cssom-patcher');
 
+function enabled() {
+	var elem = document && document.documentElement;
+	return !elem || elem.getAttribute('data-livestyle-extension') !== 'available';
+}
+
 function extractHost(url) {
 	if (url) {
 		var m = url.match(/^(\w+)(:\/\/.+?)(\/|$)/);
@@ -32,6 +37,9 @@ function init(config) {
 	})
 	.on('incoming-updates', function(data) {
 		// console.log('incoming patch', data.uri, data.patches);
+		if (!enabled()) {
+			return;
+		}
 		var result = patcher.patch(data.uri, data.patches);
 		if (!result && config.rewriteHost) {
 			// Unable to patch CSS, might be due to host mismatch.
