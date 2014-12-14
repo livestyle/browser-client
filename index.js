@@ -31,7 +31,7 @@ function init(config) {
 		console.log('LiveStyle: closed connection to server');
 	})
 	.on('incoming-updates', function(data) {
-		console.log('incoming patch', data.uri, data.patches);
+		// console.log('incoming patch', data.uri, data.patches);
 		var result = patcher.patch(data.uri, data.patches);
 		if (!result && config.rewriteHost) {
 			// Unable to patch CSS, might be due to host mismatch.
