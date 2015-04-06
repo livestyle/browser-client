@@ -1,9 +1,13 @@
-var client = require('livestyle-client');
-var patcher = require('livestyle-cssom-patcher');
+import client from 'livestyle-client';
+import patcher from 'livestyle-cssom-patcher';
 
-function enabled() {
+export function enabled() {
 	var elem = document && document.documentElement;
 	return !elem || elem.getAttribute('data-livestyle-extension') !== 'available';
+}
+
+export function disconnect() {
+	client.disconnect();
 }
 
 function extractHost(url) {
@@ -69,9 +73,3 @@ for (var i = 0, il = scripts.length; i < il; i++) {
 if (!inited) {
 	init();
 }
-
-module.exports = {
-	disconnect: function() {
-		client.disconnect();
-	}
-};
