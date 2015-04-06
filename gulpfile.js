@@ -1,24 +1,36 @@
 var gulp = require('gulp');
-var uglify = require('gulp-uglify');
-var browserify = require('browserify');
-var streamify = require('gulp-streamify');
-var through = require('through2');
-var source = require('vinyl-source-stream');
+var jsBundler = require('js-bundler');
+var rename = require('gulp-rename');
+var notifier = require('node-notifier');
 
-gulp.task('build', function() {
-	return browserify({
-		entries: './index.js',
-		detectGlobals: false,
-		standalone: 'livestyleClient'
-	})
-	.bundle()
-	.pipe(source('livestyle-client.js'))
-	// .pipe(streamify(uglify()))
-	.pipe(gulp.dest('./out'));
+var production = process.argv.indexOf('--production') !== -1;
+
+function js(options) {
+	return jsBundler(options).on('error', function(err) {
+		notifier.notify({
+			title: 'Error', 
+			message: err,
+			sound: true
+		});
+		console.error(err.stack || err);
+		this.emit('end');
+	});
+}
+
+gulp.task('js', function() {
+	return gulp.src('./index.js')
+		.pipe(js({
+			standalone: 'livestyleClient',
+			sourceMap: !production,
+			detectGlobals: false
+		}))
+		.pipe(rename('livestyle-client.js'))
+		.pipe(gulp.dest('./out'));
 });
 
 gulp.task('watch', function() {
-	gulp.watch(['index.js'], ['build']);
+	jsBundler.watch({sourceMap: true});
+	gulp.watch(['index.js'], ['js']);
 });
 
-gulp.task('default', ['build']);
+gulp.task('default', ['js']);
