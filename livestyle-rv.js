@@ -1,5 +1,5 @@
-import client from 'livestyle-client';
-import patcher from 'livestyle-cssom-patcher';
+var client = require('livestyle-client');
+var patcher = require('livestyle-cssom-patcher');
 
 function initFromScript(script) {
 	var connectUrl = script.getAttribute('data-livestyle-connect');
@@ -14,7 +14,8 @@ function initFromScript(script) {
 
 	init({
 		host: m[1],
-		endpoint: m[2]
+		endpoint: m[2],
+		timeout: 5000
 	});
 }
 
@@ -27,18 +28,15 @@ function init(config) {
 		console.log('LiveStyle: closed connection to server');
 	})
 	.on('incoming-updates diff', function(data) {
-		console.log('incoming patch', data.uri, data.patches);
 		var result = patcher.patch(data.uri, data.patches);
-		console.log('patch result:', result);
 	})
 	.connect(config);
 }
 
-
 // find script tag that embedded client
 var scripts = document.getElementsByTagName('script');
 for (var i = 0, il = scripts.length; i < il; i++) {
-	if (scripts[i].src.indexOf('/rv-livestyle.js') !== -1) {
+	if ((scripts[i].src || '').indexOf('/livestyle-rv.js') !== -1) {
 		initFromScript(scripts[i]);
 		break;
 	}
