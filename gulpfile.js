@@ -1,6 +1,5 @@
 var gulp = require('gulp');
 var jsBundler = require('js-bundler');
-var rename = require('gulp-rename');
 var notifier = require('node-notifier');
 
 var production = process.argv.indexOf('--production') !== -1;
@@ -18,19 +17,19 @@ function js(options) {
 }
 
 gulp.task('js', function() {
-	return gulp.src('./index.js')
+	return gulp.src('./livestyle-*.js')
 		.pipe(js({
-			standalone: 'livestyleClient',
 			sourceMap: !production,
-			detectGlobals: false
+			detectGlobals: false,
+			global: true,
+			uglify: production
 		}))
-		.pipe(rename('livestyle-client.js'))
 		.pipe(gulp.dest('./out'));
 });
 
 gulp.task('watch', function() {
 	jsBundler.watch({sourceMap: true});
-	gulp.watch(['index.js'], ['js']);
+	gulp.watch(['./livestyle-*.js'], ['js']);
 });
 
 gulp.task('default', ['js']);

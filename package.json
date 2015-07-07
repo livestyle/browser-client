@@ -2,7 +2,7 @@
   "name": "browser-client",
   "version": "1.0.0",
   "description": "A generic browser LiveStyle client",
-  "main": "index.js",
+  "main": "livestyle-client.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -19,8 +19,7 @@
   },
   "devDependencies": {
     "gulp": "^3.8.10",
-    "gulp-rename": "^1.2.2",
-    "js-bundler": "git+https://github.com/sergeche/js-bundler.git#v1.0.1",
+    "js-bundler": "git+https://github.com/sergeche/js-bundler.git#v1.0.3",
     "node-notifier": "^4.1.2"
   }
 }
