@@ -14,12 +14,23 @@
   "author": "Sergey Chikuyonok <serge.che@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "livestyle-client": "git+https://github.com/livestyle/client.git",
-    "livestyle-cssom-patcher": "git+https://github.com/livestyle/cssom-patcher.git"
+    "livestyle-client": "livestyle/client#v1.0.0",
+    "livestyle-cssom-patcher": "livestyle/cssom-patcher#v1.0.0"
   },
   "devDependencies": {
-    "gulp": "^3.8.10",
-    "js-bundler": "git+https://github.com/sergeche/js-bundler.git#v1.0.3",
-    "node-notifier": "^4.1.2"
-  }
+    "gulp": "^3.9.0",
+    "gulp-gzip": "^1.2.0",
+    "gulp-uglify": "^1.4.2",
+    "js-bundler": "sergeche/js-bundler#v1.0.3",
+    "node-notifier": "^4.1.2",
+    "through2": "^2.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/livestyle/browser-client.git"
+  },
+  "bugs": {
+    "url": "https://github.com/livestyle/browser-client/issues"
+  },
+  "homepage": "https://github.com/livestyle/browser-client"
 }

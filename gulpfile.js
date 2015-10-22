@@ -1,4 +1,7 @@
 var gulp = require('gulp');
+var uglify = require('gulp-uglify');
+var gzip = require('gulp-gzip');
+var through = require('through2');
 var jsBundler = require('js-bundler');
 var notifier = require('node-notifier');
 
@@ -21,8 +24,17 @@ gulp.task('js', function() {
 		.pipe(js({
 			sourceMap: !production,
 			detectGlobals: false,
-			global: true,
-			uglify: production
+			global: true
+		}))
+		.pipe(production ? uglify() : through.obj())
+		.pipe(gulp.dest('./out'));
+});
+
+gulp.task('full', ['build'], function() {
+	return gulp.src('**/*.{html,css,js,ico}', {cwd: './out'})
+		.pipe(gzip({
+			threshold: '1kb',
+			gzipOptions: {level: 7}
 		}))
 		.pipe(gulp.dest('./out'));
 });
@@ -32,4 +44,5 @@ gulp.task('watch', function() {
 	gulp.watch(['./livestyle-*.js'], ['js']);
 });
 
-gulp.task('default', ['js']);
+gulp.task('build', ['js']);
+gulp.task('default', ['build']);
